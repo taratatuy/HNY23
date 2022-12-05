@@ -20,13 +20,12 @@
         <main v-if="showPage" class="main">
             <div class="title">Осталось подождать</div>
             <div>{{ getFormattedDate }}</div>
-            <button class="test-button" @click="test()">Force New Year (for test purps)</button>
         </main>
     `,
 
       data() {
         return {
-          URL: 'https://youtube.com/shorts/0B2946cmRQw',
+          URL: 'https://youtube.com/shorts/WPV4cllI1js',
           endDate: new Date(2022, 11, 31, 23, 55),
           timeLeft: Infinity,
           showPage: false,
@@ -59,12 +58,6 @@
             this.showPage = true;
             setTimeout(this.checkTime, 1000);
           }
-        },
-
-        test() {
-          const currentTime = new Date();
-          currentTime.setSeconds(currentTime.getSeconds() + 10);
-          this.endDate = currentTime;
         },
 
         redirect() {
@@ -103,11 +96,6 @@
 
       animation-duration: 1s;
       animation-name: fadeIn;
-    }
-
-    .test-button {
-      position: absolute;
-      bottom: 100px;
     }
 
     .title {

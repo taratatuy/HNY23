@@ -1,10 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta
-      http-equiv="Refresh"
-      content="0; url='https://youtube.com/shorts/B3ufiQtvItg'"
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap"
+      rel="stylesheet"
     />
   </head>
-  <body></body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <div id="app"></div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      template: `
+        <main v-if="showPage" class="main">
+            <div class="title">Осталось подождать</div>
+            <div>{{ getFormattedDate }}</div>
+            <button class="test-button" @click="test()">Force New Year (for test purps)</button>
+        </main>
+    `,
+
+      data() {
+        return {
+          URL: 'https://youtube.com/shorts/0B2946cmRQw',
+          endDate: new Date(2022, 11, 31, 23, 55),
+          timeLeft: Infinity,
+          showPage: false,
+        };
+      },
+
+      computed: {
+        getFormattedDate() {
+          const date = new Date(
+            this.timeLeft + new Date().getTimezoneOffset() * 60 * 1000
+          );
+
+          return `Дней: ${
+            (this.timeLeft / 86400000) | 0
+          }, часов: ${date.getHours()}, минут: ${date.getMinutes()}, секунд: ${date.getSeconds()}`;
+        },
+      },
+
+      mounted() {
+        this.checkTime();
+      },
+
+      methods: {
+        checkTime() {
+          this.timeLeft = this.endDate - new Date();
+
+          if (this.timeLeft < 1000) {
+            this.redirect();
+          } else {
+            this.showPage = true;
+            setTimeout(this.checkTime, 1000);
+          }
+        },
+
+        test() {
+          const currentTime = new Date();
+          currentTime.setSeconds(currentTime.getSeconds() + 10);
+          this.endDate = currentTime;
+        },
+
+        redirect() {
+          window.location.replace(this.URL);
+        },
+      },
+    }).mount('#app');
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+
+    body {
+      height: 90vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      padding: 50px 100px 100px;
+      font-family: IBM Plex Sans;
+      font-size: 46px;
+      font-weight: 700;
+      text-align: center;
+
+      animation-duration: 1s;
+      animation-name: fadeIn;
+    }
+
+    .test-button {
+      position: absolute;
+      bottom: 100px;
+    }
+
+    .title {
+      margin-bottom: 40px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
 </html>
